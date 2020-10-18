@@ -17,18 +17,17 @@ export class ClientesComponent implements OnInit {
   constructor(private clienteService: ClienteService) { } // dependy injection
 
   ngOnInit() {
-    this.clientes = CLIENTES;
-    // this.clienteService.getClientes().pipe(
-    //   tap(clientes => {
-    //     console.log('ClientesComponent: tap 3');
-    //     clientes.forEach(cliente => {
-    //       console.log(cliente.nombre);
-    //     });
-    //   })
+    this.clienteService.getClientes().pipe(
+      tap(clientes => {
+        console.log('ClientesComponent: tap 3');
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        });
+      })
 
-    // ).subscribe(
-    //   clientes => this.clientes = clientes
-    // );
+    ).subscribe(
+      clientes => this.clientes = clientes
+    );
   }
 
 

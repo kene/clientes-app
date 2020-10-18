@@ -6,13 +6,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DirectivaComponent{
 
-  listCourses: string[] = ['Typescript', 'Javascript', 'Java SE', 'C#', 'PHP']
-  enable: boolean = true; 
+  listaCursos: string[] = ['Typescript', 'Javascript', 'Java SE', 'C#', 'PHP']
+  habilitar: boolean = true; 
 
   constructor() { }
 
-  setEnable(): void{
-    this.enable = (this.enable==true)? false: true; 
+  setHabilitar(): void{
+    this.habilitar = (this.habilitar==true)? false: true; 
   }
 
 }
