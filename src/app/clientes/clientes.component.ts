@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Cliente } from './cliente';
 import { ClienteService } from './cliente.service';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 import { tap } from 'rxjs/operators';
+import { CLIENTES } from './clientes.json';
 
 
 @Component({
@@ -16,46 +17,51 @@ export class ClientesComponent implements OnInit {
   constructor(private clienteService: ClienteService) { } // dependy injection
 
   ngOnInit() {
-    this.clienteService.getClientes().pipe(
-      tap(clientes => {
-        console.log('ClientesComponent: tap 3');
-        clientes.forEach(cliente => {
-          console.log(cliente.nombre);
-        });
-      })
+    this.clientes = CLIENTES;
+    // this.clienteService.getClientes().pipe(
+    //   tap(clientes => {
+    //     console.log('ClientesComponent: tap 3');
+    //     clientes.forEach(cliente => {
+    //       console.log(cliente.nombre);
+    //     });
+    //   })
 
-    ).subscribe(
-      clientes => this.clientes = clientes
-    );
+    // ).subscribe(
+    //   clientes => this.clientes = clientes
+    // );
   }
 
+
   delete(cliente: Cliente): void{
-    swal({
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
       title: "Esta seguro?",
       text: `Seguro que desea eliminar al cliente ${cliente.nombre} ${cliente.apellido}`,
-      type: 'warning',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'Si, eliminar!',
       cancelButtonText: 'No, cancelar!',
-      confirmButtonClass: 'btn btn-success',
-      cancelButtonClass: 'btn btn-danger',
-      buttonsStyling: false,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
       reverseButtons: true
-    }).then( (result) => {
+    }).then((result) => {
       if(result.value){
         this.clienteService.delete(cliente.id).subscribe(
           response => {
             this.clientes = this.clientes.filter( cli =>  cli !== cliente);
-            swal(
+            Swal.fire(
               'Cliente Eliminado!',
               `Cliente ${cliente.nombre} eliminado con éxito`,
               'success'
             )
-
-          }
-        )
+        })
       }
     })
 
